@@ -1,0 +1,10 @@
+<h1>{{tournament.name}}</h1>
+<table class="table table-hover">
+  <thead><tr><th>Rank</th><th>Name</th></tr></thead>
+  <tbody *ngFor="let team of teams">
+      <tr>
+        <td>{{team.rank}}</td>
+        <td>{{team.name}}</td>
+      </tr>
+  </tbody>
+</table>
