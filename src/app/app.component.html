@@ -1,4 +1,16 @@
-<h1>
-  {{title}}
-</h1>
-<app-ranking></app-ranking>
+
+<div>
+    <div [hidden]="!backButtonActive" style="padding-left: 1%; padding-top: 1%">
+      <button class="btn btn-primary" (click)="loadPreviousView()">Zurück</button>
+    </div>
+
+    <div style="padding-right: 10%; padding-left: 10%; padding-top: 5%">
+      <div [hidden]="matchSelected" id="ranking">
+        <app-ranking (teamSelectedChange)="onTeamSelectedChanged($event)" (tournamentSelectedChange)="onTournamentSelectedChanged($event)" [tournamentSelectedChanged]="tournamentSelected"></app-ranking>
+      </div>
+
+      <div [hidden]="!matchSelected">
+        <app-matches [selectedTeam]="teamSelected"></app-matches>
+      </div>
+    </div>
+</div>

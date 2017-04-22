@@ -1,12 +1,8 @@
-import {Team} from "./team";
-//noinspection TypeScriptCheckImport
-import {Result} from "./result";
-
 export class Match {
   constructor (public id: number,
-               public isActive: boolean,
-               public team1: Team,
-               public team2: Team,
-               public result: Result
+               public team1: String,
+               public team2: String,
+               public pointsTeam1: String,
+               public pointsTeam2: String
   ){ }
 }

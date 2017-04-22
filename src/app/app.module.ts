@@ -5,11 +5,15 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { RankingComponent } from './ranking/ranking.component';
+import { MatchesComponent } from './matches/matches.component';
+import { CurrentroundComponent } from './currentround/currentround.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RankingComponent
+    RankingComponent,
+    MatchesComponent,
+    CurrentroundComponent
   ],
   imports: [
     BrowserModule,

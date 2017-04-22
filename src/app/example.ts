@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {RestService} from "./rest.service";
+import {RestClient} from "./rest.client";
 
 @Component({
   selector: 'example',
@@ -8,7 +8,7 @@ import {RestService} from "./rest.service";
   
   
   `,
-  providers: [RestService]
+  providers: [RestClient]
 })
 export class AppComponent {
   title = 'app works!';

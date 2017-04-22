@@ -1,10 +1,50 @@
-<h1>{{tournament.name}}</h1>
-<table class="table table-hover">
-  <thead><tr><th>Rank</th><th>Name</th></tr></thead>
-  <tbody *ngFor="let team of teams">
+<div [hidden]="tournamentSelected">
+  <h1>Wählen sie ein Turnier aus:</h1>
+  <table class="table table-hover">
+    <thead>
       <tr>
-        <td>{{team.rank}}</td>
-        <td>{{team.name}}</td>
+        <th>Name</th>
       </tr>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tournament of tournaments" (click)="showRankings(tournament.id)">
+        <td>{{tournament.name}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<div [hidden]="!tournamentSelected">
+  <h1>{{tournament.name}}</h1>
+
+  <table class="table table-hover">
+    <thead><tr><th>Name</th><th>Rang</th></tr></thead>
+    <tbody *ngFor="let team of teams">
+        <tr (click)="showMatches(team.id)">
+          <td>{{team.name}}</td>
+          <td>{{team.rankdesc}}</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div [hidden]="!tournamentSelected">
+  <h1>Alle Matches:</h1>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th>Team Nr.1</th><th>Ergebnis</th><th>Team Nr. 2</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let match of allMatches">
+    <tr>
+      <td>{{match.team1}}</td>
+      <td>{{match.pointsTeam1}}:{{match.pointsTeam2}}</td>
+      <td>{{match.team2}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

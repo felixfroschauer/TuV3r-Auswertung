@@ -3,6 +3,7 @@ export class Team {
                public name: string,
                public rank: number,
                public occupied: boolean,
-               public group: string
+               public group: string,
+               public rankdesc: string
   ){ }
 }

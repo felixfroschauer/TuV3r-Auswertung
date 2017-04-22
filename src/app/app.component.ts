@@ -1,21 +1,19 @@
 import { Component } from '@angular/core';
-import {RestService} from "./rest.service";
-import {Team} from "./entities/team";
-import {plainToClass} from "class-transformer";
-import {Tournament} from "./entities/tournament";
+import {RestClient} from "./rest.client";
 
 @Component({
   selector: 'app-root',
   templateUrl: "./app.component.html",
-  providers: [RestService]
+  providers: [RestClient]
 })
 export class AppComponent {
-  data: string;
-  teams: Team[] = [];
-  round: number = 0;
-  tournament: Tournament[] = [];
+  matchSelected: boolean=false;
+  tournamentSelected: boolean=false;
+  teamSelected: number;
+  backButtonActive: boolean=false;
+  resultsVisible: boolean=false;
 
-  constructor(private _restService: RestService){
+  constructor(private _restService: RestClient){
     this.onStart()
   }
 
@@ -23,25 +21,43 @@ export class AppComponent {
 
   }
 
-  getTeams(){
-    this._restService.getData()
-      .subscribe(
-        data => this.data = JSON.stringify(data),
-      )
-    this.teams = plainToClass(Team, JSON.parse(this.data));
-    this.round++;
+  onTeamSelectedChanged(id: number)
+  {
+    this.matchSelected=true;
+    this.teamSelected=id;
+    this.backButtonActive=true;
   }
 
-  getTournament(id: number){
-    this._restService.getTournament(id)
-      .subscribe(
-        data => this.data = JSON.stringify(data),
-      )
-    this.tournament = plainToClass(Tournament, JSON.parse(this.data));
-    this.round++;
+  onTournamentSelectedChanged()
+  {
+    this.backButtonActive=true;
+    this.tournamentSelected=true;
+    document.getElementById("ranking").style.marginTop="-2.5%";
   }
 
-  onClick(){
-    this.round++;
+  loadPreviousView()
+  {
+    if(this.matchSelected==true) {
+      this.matchSelected=false;
+
+    }
+
+    else {
+      this.tournamentSelected=false;
+      this.backButtonActive=false;
+      document.getElementById("ranking").style.marginTop="2.5%";
+    }
+  }
+
+  setResultsVisible() {
+    this.resultsVisible=true;
+    document.getElementById("resultView").setAttribute("class", "active");
+    document.getElementById("tutorial").removeAttribute("class");
+  }
+
+  setTutorialVisible(){
+    this.resultsVisible=false;
+    document.getElementById("tutorial").setAttribute("class", "active");
+    document.getElementById("resultView").removeAttribute("class");
   }
 }
