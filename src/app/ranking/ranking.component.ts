@@ -17,13 +17,13 @@ declare var jQuery: any;
 export class RankingComponent{
   teams: Team[]=[];
   tournament: Tournament = new Tournament(0, "");
-  tournamentID: number=1;
   tournaments: Tournament[]= [];
   matches:Match[]=[];
   allMatches:Match[]=[];
-  any:any[]=[];
+  //any:any[]=[];
 
-  @ViewChild('tournamentTree') input: ElementRef;
+  @Input() tournamentID: number=1;
+  @Output() tournamentIDChange= new EventEmitter<number>();
 
   @Input() private _teamSelected: number;
   @Output() teamSelectedChange= new EventEmitter<number>();
@@ -35,7 +35,7 @@ export class RankingComponent{
 
     this.fillSelect();
     this.getAllMatches(this.tournamentID);
-    //this.fillTable(this.tournamentID);
+    this.fillTable(this.tournamentID);
   }
 
   @Input()
@@ -91,6 +91,8 @@ export class RankingComponent{
     //this.fillTable(id);
     this.tournamentSelected=true;
     this.tournamentSelectedChange.emit(this.tournamentSelected);
+    this.tournamentID=id;
+    this.tournamentIDChange.emit(id);
   }
 
   setTeamRanks(){
@@ -113,7 +115,9 @@ export class RankingComponent{
                 match.team1.rankdesc="3. Platz";
               } else {
                 var rankdescription = this.getDescription(round);
-                this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = rankdescription;
+                if((this.teams.filter(item => item.id == match.team1.id)[0])!=null) {
+                  this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = rankdescription;
+                }
               }
             }
           }
@@ -126,7 +130,9 @@ export class RankingComponent{
                 match.team2.rankdesc="3. Platz";
               }else {
                 var rankdescription = this.getDescription(round);
-                this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = rankdescription;
+                if((this.teams.filter(item => item.id == match.team2.id)[0])!=null) {
+                  this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = rankdescription;
+                }
               }
             }
           }
@@ -167,7 +173,33 @@ export class RankingComponent{
     return roundCount;
   }
 
-  /*updateRankDesc()
+  winnerOfMatch(any:any)
+  {
+    var splitPoints=any.result.split(":");
+    var pointsFirstTeam=+splitPoints[0];
+    var pointsSecondTeam=+splitPoints[1];
+
+
+    if(pointsSecondTeam>pointsFirstTeam)
+    {
+      return any.team2.id;
+    }else if(pointsSecondTeam<pointsFirstTeam) {
+      return any.team1.id
+    }
+    /*else if(pointsSecondTeam<pointsFirstTeam) {
+      if(any.team1==null)
+      {
+        return any.team2.id;
+      }
+      else{
+        return any.team1.id
+      }
+    }*/
+  }
+
+
+  /*
+  updateRankDesc()
   {
     var countTeams: number=this.teams.length;
     var power: number=0;
@@ -264,30 +296,6 @@ export class RankingComponent{
   }*/
 
 
-
-  winnerOfMatch(any:any)
-  {
-    var splitPoints=any.result.split(":");
-    var pointsFirstTeam=0+splitPoints[0];
-    var pointsSecondTeam=0+splitPoints[1];
-
-
-    if(pointsSecondTeam>pointsFirstTeam)
-    {
-      return any.team2.id;
-    }else if(pointsSecondTeam<pointsFirstTeam) {
-      return any.team1.id
-    }else if(pointsSecondTeam<pointsFirstTeam) {
-      if(any.team1==null)
-      {
-        return any.team2.id;
-      }
-      else{
-        return any.team1.id
-      }
-    }
-  }
-
   /*setRanks() {
     var countTeams: number=this.teams.length;
     var power: number=0;
@@ -341,7 +349,7 @@ export class RankingComponent{
 
   getAllMatches(id:number)
   {
-    this.repo.getMatches(id).subscribe(res=>{
+    this.repo.getMatchesByTo(id).subscribe(res=>{
       this.allMatches=[];
       res.forEach(match=>{
           var team1:String;

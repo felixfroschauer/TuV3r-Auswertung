@@ -12,6 +12,8 @@ export class AppComponent {
   backButtonActive: boolean=false;
   resultsVisible: boolean=false;
 
+  @Input() tournamentID: number=1;
+  @Output() tournamentIDChange= new EventEmitter<number>();
 
   @Input() tournamentSelected: boolean=false;
   @Output() tournamentSelectedChange= new EventEmitter<boolean>();
@@ -22,6 +24,12 @@ export class AppComponent {
 
   onStart(){
 
+  }
+
+  onTournamentIDChanged(id: number)
+  {
+    this.tournamentID=id;
+    this.tournamentIDChange.emit(id);
   }
 
   onTeamSelectedChanged(id: number)

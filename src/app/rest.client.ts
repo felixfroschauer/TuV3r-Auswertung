@@ -34,7 +34,17 @@ export class RestClient {
     return JSON.stringify(json);
   }
 
-  getMatches(id:number){
+  getRounds(id:number)
+  {
+    return this._http.get("http://vm15.htl-leonding.ac.at:8090/Turnierverwaltung/rs/round/by?toid="+id).map(res => res.json());
+  }
+
+  getMatchesByRo(id:number)
+  {
+    return this._http.get("http://vm15.htl-leonding.ac.at:8090/Turnierverwaltung/rs/match/by?roid="+id).map(res => res.json());
+  }
+
+  getMatchesByTo(id:number){
     return Observable.interval(5000).switchMap(()=>this._http.get("http://vm15.htl-leonding.ac.at:8090/Turnierverwaltung/rs/match/by?toid="+id)).map(res => res.json());
   }
 }

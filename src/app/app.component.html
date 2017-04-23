@@ -6,7 +6,9 @@
 
     <div style="padding-right: 10%; padding-left: 10%; padding-top: 5%">
       <div *ngIf="!matchSelected" id="ranking">
-        <app-ranking (teamSelectedChange)="onTeamSelectedChanged($event)" (tournamentSelectedChange)="onTournamentSelectedChanged($event)" [tournamentSelectedChanged]="tournamentSelected"></app-ranking>
+        <app-ranking (teamSelectedChange)="onTeamSelectedChanged($event)"
+                     (tournamentSelectedChange)="onTournamentSelectedChanged($event)" [tournamentSelectedChanged]="tournamentSelected"
+                     (tournamentIDChange)="onTournamentIDChanged($event)" [tournamentID]="tournamentID"></app-ranking>
       </div>
 
       <div *ngIf="matchSelected">
@@ -14,7 +16,7 @@
       </div>
 
       <div *ngIf="tournamentSelected">
-        <app-currentround ></app-currentround>
+        <app-currentround [tournamentID]="tournamentID"></app-currentround>
       </div>
 
     </div>
