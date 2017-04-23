@@ -8,7 +8,7 @@
       <div *ngIf="!matchSelected" id="ranking">
         <app-ranking (teamSelectedChange)="onTeamSelectedChanged($event)"
                      (tournamentSelectedChange)="onTournamentSelectedChanged($event)" [tournamentSelectedChanged]="tournamentSelected"
-                     (tournamentIDChange)="onTournamentIDChanged($event)" [tournamentID]="tournamentID"></app-ranking>
+                     (tournamentIDChange)="onTournamentIDChanged($event)"></app-ranking>
       </div>
 
       <div *ngIf="matchSelected">

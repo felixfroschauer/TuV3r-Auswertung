@@ -22,7 +22,7 @@ export class RankingComponent{
   allMatches:Match[]=[];
   //any:any[]=[];
 
-  @Input() tournamentID: number=1;
+  @Input() private tournamentID: number=1;
   @Output() tournamentIDChange= new EventEmitter<number>();
 
   @Input() private _teamSelected: number;
@@ -108,30 +108,34 @@ export class RankingComponent{
         {
           if(match.team1!=null) {
             if (match.team1.id != this.winnerOfMatch(match)) {
-              var round=match.round.count;
+              if(match.round!=null) {
+                var round = match.round.count;
 
-              if(round==roundCount-1) {
-                match.team2.rankdesc="3. Platz";
-                match.team1.rankdesc="3. Platz";
-              } else {
-                var rankdescription = this.getDescription(round);
-                if((this.teams.filter(item => item.id == match.team1.id)[0])!=null) {
-                  this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = rankdescription;
+                if (round == roundCount - 1) {
+                  match.team2.rankdesc = "3. Platz";
+                  match.team1.rankdesc = "3. Platz";
+                } else {
+                  var rankdescription = this.getDescription(round);
+                  if ((this.teams.filter(item => item.id == match.team1.id)[0]) != null) {
+                    this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = rankdescription;
+                  }
                 }
               }
             }
           }
           if(match.team2!=null) {
             if (match.team2.id != this.winnerOfMatch(match)) {
-              var round=match.round.count;
+              if(match.round!=null) {
+                var round = match.round.count;
 
-              if(round==roundCount-1) {
-                match.team1.rankdesc="3. Platz";
-                match.team2.rankdesc="3. Platz";
-              }else {
-                var rankdescription = this.getDescription(round);
-                if((this.teams.filter(item => item.id == match.team2.id)[0])!=null) {
-                  this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = rankdescription;
+                if (round == roundCount - 1) {
+                  match.team1.rankdesc = "3. Platz";
+                  match.team2.rankdesc = "3. Platz";
+                } else {
+                  var rankdescription = this.getDescription(round);
+                  if ((this.teams.filter(item => item.id == match.team2.id)[0]) != null) {
+                    this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = rankdescription;
+                  }
                 }
               }
             }

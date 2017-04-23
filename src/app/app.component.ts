@@ -29,7 +29,6 @@ export class AppComponent {
   onTournamentIDChanged(id: number)
   {
     this.tournamentID=id;
-    this.tournamentIDChange.emit(id);
   }
 
   onTeamSelectedChanged(id: number)
