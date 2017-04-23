@@ -1,0 +1,72 @@
+<div>
+  <button style="margin-left: 80%" class="btn btn-primary" onclick="showFinalRankings()">Gesammtauswertung</button>
+</div>
+<div>
+  <h1 style="text-align: center; padding-top: -5%; padding-bottom: 5%">Runde Nr.{{round}}</h1>
+</div>
+
+<div>
+  <div class="col-xs-6" style="padding-right: 5%">
+      <h3 style="text-align: center; padding-bottom: 2%">Ausstehend</h3>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th style="text-align: center">Team Nr.1</th>
+          <th style="text-align: center">vs</th>
+          <th style="text-align: center">Team Nr. 2</th>
+          <th style="text-align: center">Platz</th>
+          <th style="text-align: center">Start</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let match of matchesToBeDone">
+        <tr>
+          <td style="text-align: center">{{match.team1}}</td>
+          <td style="text-align: center">vs</td>
+          <td style="text-align: center">{{match.team2}}</td>
+          <td style="text-align: center">{{match.court}}</td>
+          <td style="text-align: center">{{match.start}}</td>
+        </tr>
+        </tbody>
+      </table>
+  </div>
+
+  <div class="col-xs-6" style="padding-left: 5%">
+      <h3 style="text-align: center; padding-bottom: 2%">Gespielt</h3>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th style="text-align: center">Team Nr.1</th>
+          <th style="text-align: center">Ergebnis</th>
+          <th style="text-align: center">Team Nr. 2</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let match of matchesDone">
+        <tr>
+          <td style="text-align: center">{{match.team1}}</td>
+          <td style="text-align: center">{{match.result}}</td>
+          <td style="text-align: center">{{match.team2}}</td>
+        </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
+
+<div style="padding-left: 20%; padding-right: 20%; padding-top: 20%" >
+  <h3 style="text-align: center; padding-bottom: 2%">Letzte Runde</h3>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th style="text-align: center">Team Nr.1</th>
+      <th style="text-align: center">Ergebnis</th>
+      <th style="text-align: center">Team Nr. 2</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let match of matchesLastRound">
+    <tr>
+      <td style="text-align: center">{{match.team1}}</td>
+      <td style="text-align: center">{{match.result}}</td>
+      <td style="text-align: center">{{match.team2}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

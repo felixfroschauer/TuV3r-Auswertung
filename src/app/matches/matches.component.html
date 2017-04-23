@@ -1,0 +1,14 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Team Nr.1</th><th>Ergebnis</th><th>Team Nr. 2</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let match of matchesOfTeam">
+  <tr>
+    <td>{{match.team1}}</td>
+    <td>{{match.result}}</td>
+    <td>{{match.team2}}</td>
+  </tr>
+  </tbody>
+</table>
