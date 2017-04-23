@@ -12,6 +12,9 @@ export class AppComponent {
   backButtonActive: boolean=false;
   resultsVisible: boolean=false;
 
+  @Input() showEndStatistic: boolean;
+  @Output() showEndStatisticChange= new EventEmitter<boolean>();
+
   @Input() tournamentID: number=1;
   @Output() tournamentIDChange= new EventEmitter<number>();
 
@@ -24,6 +27,11 @@ export class AppComponent {
 
   onStart(){
 
+  }
+
+  onShowEndStatisticChanged(b: boolean)
+  {
+    this.showEndStatistic=b;
   }
 
   onTournamentIDChanged(id: number)
@@ -50,6 +58,8 @@ export class AppComponent {
   {
     if(this.matchSelected==true) {
       this.matchSelected=false;
+    }else if(this.showEndStatistic==true){
+      this.showEndStatistic=false;
     } else {
       this.tournamentSelected=false;
       this.backButtonActive=false;

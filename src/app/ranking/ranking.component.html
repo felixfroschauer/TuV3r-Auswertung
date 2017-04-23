@@ -16,12 +16,12 @@
 
 
 
-<div *ngIf="false">
+<div *ngIf="_showEndStatistic">
   <h1>{{tournament.name}}</h1>
 
   <table class="table table-hover">
     <thead><tr><th>Name</th><th>Rang</th></tr></thead>
-    <tbody *ngFor="let team of teams">
+    <tbody class *ngFor="let team of teams">
         <tr (click)="showMatches(team.id)">
           <td>{{team.name}}</td>
           <td>{{team.rankdesc}}</td>
@@ -31,7 +31,7 @@
 </div>
 
 
-<div *ngIf="false">
+<div *ngIf="_showEndStatistic">
   <h1>Alle Matches:</h1>
   <table class="table table-hover">
     <thead>

@@ -31,16 +31,24 @@ export class RankingComponent{
   @Input() private tournamentSelected: boolean=false;
   @Output() tournamentSelectedChange= new EventEmitter<boolean>();
 
+  _showEndStatistic:boolean=false;
+
   constructor(private repo: RestClient) {
 
     this.fillSelect();
     this.getAllMatches(this.tournamentID);
-    this.fillTable(this.tournamentID);
+    //this.fillTable(this.tournamentID);
   }
 
   @Input()
   set tournamentSelectedChanged(b: boolean) {
     this.tournamentSelected=b;
+  }
+
+  @Input()
+  set showEndStatistic(b: boolean) {
+    this._showEndStatistic=b;
+    this.fillTable(this.tournamentID);
   }
 
   fillSelect(){
@@ -106,60 +114,63 @@ export class RankingComponent{
       {
         res.forEach(match=>
         {
-          if(match.team1!=null) {
-            if (match.team1.id != this.winnerOfMatch(match)) {
-              if(match.round!=null) {
-                var round = match.round.count;
+          if(match.round!=null)
+          {
+            //check mini finale
+            if(match.round.count==roundCount-1)
+            {
+              var id=this.winnerOfMatch(match);
+              this.teams.filter(item => item.id == id)[0].rankdesc = "3.Platz";
+              this.teams.filter(item => item.id == id)[0].rank=3;
 
-                if (round == roundCount - 1) {
-                  match.team2.rankdesc = "3. Platz";
-                  match.team1.rankdesc = "3. Platz";
-                } else {
-                  var rankdescription = this.getDescription(round);
-                  if ((this.teams.filter(item => item.id == match.team1.id)[0]) != null) {
-                    this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = rankdescription;
-                  }
-                }
+
+              if(id==match.team1.id)
+              {
+                this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = "4.Platz";
+                this.teams.filter(item => item.id == match.team2.id)[0].rank=4;
+              }else{
+                this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = "4.Platz";
+                this.teams.filter(item => item.id == match.team1.id)[0].rank=4;
+              }
+            }
+            //check finale
+            else if(match.round.count==roundCount)
+            {
+              var id=this.winnerOfMatch(match);
+              this.teams.filter(item => item.id == id)[0].rankdesc = "1.Platz";
+              this.teams.filter(item => item.id == id)[0].rank=1;
+              if(id==match.team1.id)
+              {
+                this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = "2.Platz";
+                this.teams.filter(item => item.id == match.team2.id)[0].rank=2;
+              }else{
+                this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = "2.Platz";
+                this.teams.filter(item => item.id == match.team1.id)[0].rank=2;
+              }
+            }else{
+              var id=this.winnerOfMatch(match);
+              if(match.team1.id==id){
+                this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = "Bis zur "+match.round.count+". Runde gekommen";
+                this.teams.filter(item => item.id == match.team2.id)[0].rank=(1+roundCount-match.round.count)+2;
+              }else{
+                this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = "Bis zur "+match.round.count+". Runde gekommen";
+                this.teams.filter(item => item.id == match.team1.id)[0].rank=(1+roundCount-match.round.count)+2;
               }
             }
           }
-          if(match.team2!=null) {
-            if (match.team2.id != this.winnerOfMatch(match)) {
-              if(match.round!=null) {
-                var round = match.round.count;
 
-                if (round == roundCount - 1) {
-                  match.team1.rankdesc = "3. Platz";
-                  match.team2.rankdesc = "3. Platz";
-                } else {
-                  var rankdescription = this.getDescription(round);
-                  if ((this.teams.filter(item => item.id == match.team2.id)[0]) != null) {
-                    this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = rankdescription;
-                  }
-                }
-              }
-            }
+        });
+        this.teams.sort((a: any, b: any) => {
+          if (a.rank < b.rank) {
+            return -1;
+          } else if (a.rank > b.rank) {
+            return 1;
+          } else {
+            return 0;
           }
         });
       });
     });
-  }
-
-  getDescription(round:number)
-  {
-    var output: string;
-
-
-    //get total number of rounds
-    var roundCount: number=this.getRoundCount();
-
-    if(round==roundCount+1){
-      output="Zweitplatziert";
-    } else {
-      // var num = power-(+team.rankdesc);
-      output= "Bis zur "+round+ ". Runde gekommen";
-    }
-    return output;
   }
 
   getRoundCount(){
@@ -174,7 +185,7 @@ export class RankingComponent{
         exit=true;
       }
     }
-    return roundCount;
+    return roundCount+1;
   }
 
   winnerOfMatch(any:any)

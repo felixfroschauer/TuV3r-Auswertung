@@ -14,18 +14,27 @@ export class CurrentroundComponent implements OnInit {
   matchesToBeDone: MatchInDepth[]=[];
   matchesLastRound: Match[]=[];
 
+  @Input() private showEndStatistic: boolean=false;
+  @Output() showEndStatisticChanged= new EventEmitter<boolean>();
+
   round:number=1;
   _tournamentID: number=1;
-
-  @Input()
-  set tournamentID(id: number) {
-    this._tournamentID=id;
-  }
 
   constructor(private repo: RestClient) { }
 
   ngOnInit() {
     this.getRound();
+  }
+
+
+  showFinalRankings(){
+    this.showEndStatistic=true;
+    this.showEndStatisticChanged.emit(this.showEndStatistic);
+  }
+
+  @Input()
+  set tournamentID(id: number) {
+    this._tournamentID=id;
   }
 
   getRound(){
@@ -51,9 +60,6 @@ export class CurrentroundComponent implements OnInit {
     });
   }
 
-  showFinalRankings(){
-
-  }
 
   getMatches(id:number){
     this.repo.getMatchesByRo(id).subscribe(res =>{
