@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {RestClient} from "./rest.client";
 
 @Component({
@@ -8,10 +8,13 @@ import {RestClient} from "./rest.client";
 })
 export class AppComponent {
   matchSelected: boolean=false;
-  tournamentSelected: boolean=false;
   teamSelected: number;
   backButtonActive: boolean=false;
   resultsVisible: boolean=false;
+
+
+  @Input() tournamentSelected: boolean=false;
+  @Output() tournamentSelectedChange= new EventEmitter<boolean>();
 
   constructor(private _restService: RestClient){
     this.onStart()
@@ -32,6 +35,7 @@ export class AppComponent {
   {
     this.backButtonActive=true;
     this.tournamentSelected=true;
+    this.tournamentSelectedChange.emit(this.tournamentSelected);
     document.getElementById("ranking").style.marginTop="-2.5%";
   }
 
@@ -39,10 +43,7 @@ export class AppComponent {
   {
     if(this.matchSelected==true) {
       this.matchSelected=false;
-
-    }
-
-    else {
+    } else {
       this.tournamentSelected=false;
       this.backButtonActive=false;
       document.getElementById("ranking").style.marginTop="2.5%";

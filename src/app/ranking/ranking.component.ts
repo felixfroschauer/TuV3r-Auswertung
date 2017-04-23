@@ -67,7 +67,6 @@ export class RankingComponent{
         }
         return -1;
       })
-      this.setTeamRanks();
       this.teams.forEach(item=>{
         if(item.name==null)
         {
@@ -79,6 +78,7 @@ export class RankingComponent{
           this.teams.splice(this.teams.indexOf(item),1);
         }
       });
+      this.setTeamRanks();
     });
   }
 
@@ -87,8 +87,8 @@ export class RankingComponent{
     this.teamSelectedChange.emit(this._teamSelected);
   }
 
-  showRankings(id:number) {
-    this.fillTable(id);
+  showTournament(id:number) {
+    //this.fillTable(id);
     this.tournamentSelected=true;
     this.tournamentSelectedChange.emit(this.tournamentSelected);
   }
@@ -190,20 +190,20 @@ export class RankingComponent{
       if(team.rankdesc==""){
         team.rankdesc="Gewonnen!";
         team.rank=1;
-        this.sortedTeams[0]=team;
+        sortedTeams[0]=team;
       } else if(+team.rankdesc==power){
         team.rankdesc="Zweitplatziert";
         team.rank=2;
-        this.sortedTeams[1]=team;
+        sortedTeams[1]=team;
       } else if(+team.rankdesc==power-1){
         team.rank=3;
-        if(this.sortedTeams[2]==null) {
+        if(sortedTeams[2]==null) {
           team.rankdesc = "3.Platz";
-          this.sortedTeams[2] = team;
+          sortedTeams[2] = team;
         }
         else{
           team.rankdesc="4.Platz";
-          this.sortedTeams[3] = team;
+          sortedTeams[3] = team;
         }
       } else {
         team.rank=(+team.rankdesc);
@@ -220,15 +220,15 @@ export class RankingComponent{
     });
     tail.forEach(item=>
     {
-      this.sortedTeams.push(item);
+      sortedTeams.push(item);
     });
-    this.sortedTeams.forEach(t=>{
+    sortedTeams.forEach(t=>{
       if(t.name==null)
       {
-        this.sortedTeams.splice(t.id,1);
+        sortedTeams.splice(t.id,1);
       }
     });
-    this.teams=this.sortedTeams;
+    this.teams=sortedTeams;
   }
 
   setRanks() {
@@ -267,12 +267,17 @@ export class RankingComponent{
 
   winnerOfMatch(any:any)
   {
-    if(any.resultObject.pointsSecondTeam>any.resultObject.pointsFirstTeam)
+    var splitPoints=any.result.split(":");
+    var pointsFirstTeam=0+splitPoints[0];
+    var pointsSecondTeam=0+splitPoints[1];
+
+
+    if(pointsSecondTeam>pointsFirstTeam)
     {
       return any.team2.id;
-    }else if(any.resultObject.pointsSecondTeam<any.resultObject.pointsFirstTeam) {
+    }else if(pointsSecondTeam<pointsFirstTeam) {
       return any.team1.id
-    }else if(any.resultObject.pointsSecondTeam<any.resultObject.pointsFirstTeam) {
+    }else if(pointsSecondTeam<pointsFirstTeam) {
       if(any.team1==null)
       {
         return any.team2.id;
@@ -329,7 +334,7 @@ export class RankingComponent{
         if(match.team2==null) {
           team2="Fill-in";
         }
-        this.matches.push(new Match(match.id, team1, team2, match.resultObject.pointsFirstTeam, match.resultObject.pointsSecondTeam));
+        this.matches.push(new Match(match.id, team1, team2, match.result));
       });
     });
   }
@@ -352,7 +357,7 @@ export class RankingComponent{
           }else{
             team2=match.team2.name;
           }
-          this.allMatches.push(new Match(match.id, team1, team2, match.resultObject.pointsFirstTeam, match.resultObject.pointsSecondTeam));
+        this.allMatches.push(new Match(match.id, team1, team2, match.result));
        }
       );
       this.allMatches.reverse();

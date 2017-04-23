@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let tournament of tournaments" (click)="showRankings(tournament.id)">
+      <tr *ngFor="let tournament of tournaments" (click)="showTournament(tournament.id)">
         <td>{{tournament.name}}</td>
       </tr>
     </tbody>
@@ -16,7 +16,7 @@
 
 
 
-<div [hidden]="!tournamentSelected">
+<div *ngIf="false">
   <h1>{{tournament.name}}</h1>
 
   <table class="table table-hover">
@@ -31,7 +31,7 @@
 </div>
 
 
-<div [hidden]="!tournamentSelected">
+<div *ngIf="false">
   <h1>Alle Matches:</h1>
   <table class="table table-hover">
     <thead>
@@ -42,7 +42,7 @@
     <tbody *ngFor="let match of allMatches">
     <tr>
       <td>{{match.team1}}</td>
-      <td>{{match.pointsTeam1}}:{{match.pointsTeam2}}</td>
+      <td>{{match.result}}</td>
       <td>{{match.team2}}</td>
     </tr>
     </tbody>
