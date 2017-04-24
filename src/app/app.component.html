@@ -1,9 +1,9 @@
 <div>
-    <div *ngIf="backButtonActive" style="padding-left: 1%; padding-top: 1%">
+    <div *ngIf="backButtonActive" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%">
       <button class="btn btn-primary" (click)="loadPreviousView()">Zurück</button>
     </div>
 
-    <div style="padding-right: 10%; padding-left: 10%; padding-top: 5%">
+    <div class="blurContent" style="padding-right: 10%; padding-left: 10%; padding-top: 5%">
       <div *ngIf="!matchSelected" id="ranking">
           <app-ranking (teamSelectedChange)="onTeamSelectedChanged($event)"
                        (tournamentSelectedChange)="onTournamentSelectedChanged($event)" [tournamentSelectedChanged]="tournamentSelected"

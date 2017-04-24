@@ -27,6 +27,7 @@ export class RankingComponent{
   @Input() private tournamentID: number=1;
   @Output() tournamentIDChange= new EventEmitter<number>();
 
+
   @Input() private _teamSelected: number;
   @Output() teamSelectedChange= new EventEmitter<number>();
 
@@ -39,6 +40,8 @@ export class RankingComponent{
     this.podest.length=3;
     this.fillSelect();
     this.getAllMatches(this.tournamentID);
+    //localStorage.setItem('currentTournament', JSON.stringify(1));
+
     //this.fillTable(this.tournamentID);
   }
 
@@ -51,7 +54,12 @@ export class RankingComponent{
   set showEndStatistic(b: boolean) {
     this._showEndStatistic=b;
     if(b){
-      this.fillTable(this.tournamentID);
+      if(JSON.parse(localStorage.getItem('currentTournament'))!=null){
+        var id:number=+JSON.parse(localStorage.getItem('currentTournament'));
+        this.fillTable(id);
+      }else {
+        this.fillTable(this.tournamentID);
+      }
     }
   }
 
@@ -66,11 +74,17 @@ export class RankingComponent{
   }
 
   fillTable(tournamentID: number){
+    if(tournamentID==1&&JSON.parse(localStorage.getItem('currentTournament'))!=null){
+      var id:number=+JSON.parse(localStorage.getItem('currentTournament'));
+      if(id!=tournamentID){
+        tournamentID=id;
+      }
+    }
     this.getAllMatches(tournamentID);
       this.teams = [];
       this.repo.getTournament(tournamentID).subscribe(res => {
         //console.log(res);
-        this.tournamentID = res.id;
+        //this.tournamentID = res.id;
         this.tournament = new Tournament(res.id, res.name);
         //this.any=res.teams;
         res.teams.forEach(item => this.teams.push(new Team(item.id, item.name, item.rank, item.occupied, item.group, "")));
@@ -105,6 +119,8 @@ export class RankingComponent{
     this.tournamentSelectedChange.emit(this.tournamentSelected);
     this.tournamentID=id;
     this.tournamentIDChange.emit(id);
+    localStorage.setItem('currentTournament', JSON.stringify(id));
+
   }
 
   setTeamRanks(){
@@ -372,9 +388,15 @@ export class RankingComponent{
     });
   }
 
-  getAllMatches(id:number)
+  getAllMatches(tid:number)
   {
-    this.repo.getMatchesByTo(id).subscribe(res=>{
+    if(tid==1&&JSON.parse(localStorage.getItem('currentTournament'))!=null){
+      var id:number=+JSON.parse(localStorage.getItem('currentTournament'));
+      if(tid!=id){
+        tid=id;
+      }
+    }
+    this.repo.getMatchesByTo(tid).subscribe(res=>{
       this.allMatches=[];
       res.forEach(match=>{
           var team1:String;

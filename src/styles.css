@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+.blurContent{
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  border:1px solid #ccc;
+  background-color: rgba(253, 255, 224, 0.2);
+  border-radius: 1px;
+  padding-right: 10%; padding-left: 10%; padding-top: 5%;
+}
+
+body{
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 100% 100%;
+}
