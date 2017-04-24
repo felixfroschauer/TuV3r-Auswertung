@@ -1,5 +1,7 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {RestClient} from "./rest.client";
+import {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -12,6 +14,8 @@ export class AppComponent {
   backButtonActive: boolean=false;
   resultsVisible: boolean=false;
 
+  public location = '' ;
+
   @Input() showEndStatistic: boolean;
   @Output() showEndStatisticChange= new EventEmitter<boolean>();
 
@@ -21,7 +25,11 @@ export class AppComponent {
   @Input() tournamentSelected: boolean=false;
   @Output() tournamentSelectedChange= new EventEmitter<boolean>();
 
-  constructor(private _restService: RestClient){
+  @Input() private showCurrentTournament: boolean=false;
+  @Output() showCurrentTournamentChanged= new EventEmitter<boolean>();
+
+  constructor(private _restService: RestClient, private  _router : Router){
+    this.location = _router.url;
     this.onStart()
   }
 
@@ -34,6 +42,10 @@ export class AppComponent {
     this.showEndStatistic=b;
   }
 
+  onShowCurrentTournamentChanged(b: boolean)
+  {
+    this.showCurrentTournament=b;
+  }
 
   onTournamentIDChanged(id: number)
   {
@@ -52,6 +64,7 @@ export class AppComponent {
     this.backButtonActive=true;
     this.tournamentSelected=true;
     this.tournamentSelectedChange.emit(this.tournamentSelected);
+    this.location = this._router.url;
     document.getElementById("ranking").style.marginTop="-2.5%";
   }
 

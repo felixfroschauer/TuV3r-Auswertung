@@ -27,7 +27,6 @@ export class RankingComponent{
   @Input() private tournamentID: number=1;
   @Output() tournamentIDChange= new EventEmitter<number>();
 
-
   @Input() private _teamSelected: number;
   @Output() teamSelectedChange= new EventEmitter<number>();
 
@@ -120,6 +119,9 @@ export class RankingComponent{
     this.tournamentID=id;
     this.tournamentIDChange.emit(id);
     localStorage.setItem('currentTournament', JSON.stringify(id));
+
+
+    window.open("http://localhost:4200/live", '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
 
   }
 

@@ -8,6 +8,11 @@ import { RankingComponent } from './ranking/ranking.component';
 import { MatchesComponent } from './matches/matches.component';
 import { CurrentroundComponent } from './currentround/currentround.component';
 import { CurrenttournamentComponent } from './currenttournament/currenttournament.component';
+import { RouterModule, Routes } from '@angular/router';
+
+const appRoutes: Routes = [
+  { path: 'live', component: CurrenttournamentComponent }
+];
 
 @NgModule({
   declarations: [
@@ -18,6 +23,7 @@ import { CurrenttournamentComponent } from './currenttournament/currenttournamen
     CurrenttournamentComponent
   ],
   imports: [
+    RouterModule.forRoot(appRoutes),
     BrowserModule,
     FormsModule,
     HttpModule

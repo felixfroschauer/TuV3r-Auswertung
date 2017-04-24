@@ -1,25 +1,32 @@
 <div>
-    <div *ngIf="backButtonActive" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%">
-      <button class="btn btn-primary" (click)="loadPreviousView()">Zurück</button>
-    </div>
-
-    <div class="blurContent" style="padding-right: 10%; padding-left: 10%; padding-top: 5%">
-      <div *ngIf="!matchSelected" id="ranking">
-          <app-ranking (teamSelectedChange)="onTeamSelectedChanged($event)"
-                       (tournamentSelectedChange)="onTournamentSelectedChanged($event)" [tournamentSelectedChanged]="tournamentSelected"
-                       (tournamentIDChange)="onTournamentIDChanged($event)"
-                       [showEndStatistic]="showEndStatistic"></app-ranking>
+    <div *ngIf = "location != '/live'">
+      <div *ngIf="backButtonActive" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%">
+        <button class="btn btn-primary" (click)="loadPreviousView()">Zurück</button>
       </div>
 
-      <div *ngIf="matchSelected">
-        <app-matches [selectedTeam]="teamSelected"></app-matches>
-      </div>
-
-      <div *ngIf="tournamentSelected">
-        <div *ngIf="!showEndStatistic">
-          <app-currentround [tournamentID]="tournamentID" (showEndStatisticChanged)="onShowEndStatisticChanged($event)"></app-currentround>
+      <div class="blurContent" style="padding-right: 10%; padding-left: 10%; padding-top: 5%">
+        <div *ngIf="!matchSelected" id="ranking">
+            <app-ranking (teamSelectedChange)="onTeamSelectedChanged($event)"
+                         (tournamentSelectedChange)="onTournamentSelectedChanged($event)" [tournamentSelectedChanged]="tournamentSelected"
+                         (tournamentIDChange)="onTournamentIDChanged($event)"
+                         [showEndStatistic]="showEndStatistic"></app-ranking>
         </div>
-      </div>
 
+        <div *ngIf="matchSelected">
+          <app-matches [selectedTeam]="teamSelected"></app-matches>
+        </div>
+
+        <div *ngIf="tournamentSelected">
+          <div *ngIf="!showEndStatistic">
+            <app-currentround [tournamentID]="tournamentID" (showEndStatisticChanged)="onShowEndStatisticChanged($event)"></app-currentround>
+          </div>
+        </div>
+
+      </div>
     </div>
 </div>
+<div>
+  <router-outlet>
+  </router-outlet>
+</div>
+
