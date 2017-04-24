@@ -1,0 +1,9 @@
+html, body{
+  margin: 0;
+  height: 100%;
+  background: url(https://www.eastcobber.com/wp-content/uploads/2015/03/o-SOCCER-BALL-facebook1.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 100% 100%;
+}

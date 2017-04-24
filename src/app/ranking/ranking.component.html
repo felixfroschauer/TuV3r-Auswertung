@@ -1,5 +1,5 @@
 <div [hidden]="tournamentSelected">
-  <h1>Wählen sie ein Turnier aus:</h1>
+  <h1 style="text-align: center; margin-bottom: 5%">Wählen sie ein Turnier aus:</h1>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -15,36 +15,64 @@
 </div>
 
 
+<div  *ngIf="_showEndStatistic" >
+  <div style="margin-bottom: 3%">
+    <h1 style="text-align: center">{{tournament.name}}</h1>
+  </div>
 
-<div *ngIf="_showEndStatistic">
-  <h1>{{tournament.name}}</h1>
+  <div class="row centered-form center-block" style="margin-bottom: 5%">
+    <div class="container col-md-12 col-md-offset-3">
+        <div class="row" style="width: 100%">
 
-  <table class="table table-hover">
-    <thead><tr><th>Name</th><th>Rang</th></tr></thead>
-    <tbody class *ngFor="let team of teams">
-        <tr (click)="showMatches(team.id)">
-          <td>{{team.name}}</td>
-          <td>{{team.rankdesc}}</td>
+          <div class="col-md-2">
+            <button type="button" style="background-color: gold; width: 100%" class="btn">{{podest[0]}}</button>
+          </div>
+          <div class="col-md-2">
+            <button type="button" style="background-color: silver; width: 100%" class="btn">{{podest[1]}}</button>
+          </div>
+          <div class="col-md-2">
+            <button type="button" style="background-color: #cd7f32; width: 100%" class="btn">{{podest[2]}}</button>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <table class="table table-hover text-centered">
+      <thead>
+        <tr>
+          <th class="col-md-6">Name</th>
+          <th class="col-md-6">Rang</th>
         </tr>
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody class *ngFor="let team of teams">
+          <tr (click)="showMatches(team.id)">
+            <td class="col-md-6">{{team.name}}</td>
+            <td class="col-md-6">{{team.rankdesc}}</td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
 
 
-<div *ngIf="_showEndStatistic">
-  <h1>Alle Matches:</h1>
-  <table class="table table-hover">
-    <thead>
-    <tr>
-      <th>Team Nr.1</th><th>Ergebnis</th><th>Team Nr. 2</th>
-    </tr>
-    </thead>
-    <tbody *ngFor="let match of allMatches">
-    <tr>
-      <td>{{match.team1}}</td>
-      <td>{{match.result}}</td>
-      <td>{{match.team2}}</td>
-    </tr>
-    </tbody>
-  </table>
+  <div style="margin-top: 10%; margin-bottom: 3%">
+    <h1 style="text-align: center">Alle Matches:</h1>
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th style="text-align: center">Team Nr.1</th>
+        <th style="text-align: center">Ergebnis</th>
+        <th style="text-align: center">Team Nr. 2</th>
+      </tr>
+      </thead>
+      <tbody *ngFor="let match of allMatches">
+      <tr>
+        <td style="text-align: center">{{match.team1}}</td>
+        <td style="text-align: center">{{match.result}}</td>
+        <td style="text-align: center">{{match.team2}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

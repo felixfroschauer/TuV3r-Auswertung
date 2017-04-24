@@ -41,6 +41,7 @@ export class CurrentroundComponent implements OnInit {
     this.repo.getRounds(this._tournamentID).subscribe(res => {
       var latest=1;
       var prev=1;
+      var latestRound;
       res.forEach(r => {
         if(r.id>latest)
         {
@@ -53,7 +54,7 @@ export class CurrentroundComponent implements OnInit {
       this.matchesToBeDone=[];
       this.matchesLastRound=[];
       this.getMatches(latest);
-      if(prev!=0)
+      if(this.round!=1)
       {
         this.getMatchesPrevRound(prev);
       }

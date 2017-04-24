@@ -34,6 +34,7 @@ export class AppComponent {
     this.showEndStatistic=b;
   }
 
+
   onTournamentIDChanged(id: number)
   {
     this.tournamentID=id;

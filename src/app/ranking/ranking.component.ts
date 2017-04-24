@@ -21,6 +21,8 @@ export class RankingComponent{
   matches:Match[]=[];
   allMatches:Match[]=[];
   //any:any[]=[];
+  podest:String[]=[];
+
 
   @Input() private tournamentID: number=1;
   @Output() tournamentIDChange= new EventEmitter<number>();
@@ -34,7 +36,7 @@ export class RankingComponent{
   _showEndStatistic:boolean=false;
 
   constructor(private repo: RestClient) {
-
+    this.podest.length=3;
     this.fillSelect();
     this.getAllMatches(this.tournamentID);
     //this.fillTable(this.tournamentID);
@@ -48,8 +50,11 @@ export class RankingComponent{
   @Input()
   set showEndStatistic(b: boolean) {
     this._showEndStatistic=b;
-    this.fillTable(this.tournamentID);
+    if(b){
+      this.fillTable(this.tournamentID);
+    }
   }
+
 
   fillSelect(){
     this.repo.getTournamentDTOs().subscribe(res => {
@@ -61,33 +66,32 @@ export class RankingComponent{
   }
 
   fillTable(tournamentID: number){
-    this.teams=[];
-    this.repo.getTournament(tournamentID).subscribe(res => {
-      //console.log(res);
-      this.tournamentID=res.id;
-      this.tournament=new Tournament(res.id,res.name);
-      //this.any=res.teams;
-      res.teams.forEach(item=>this.teams.push(new Team(item.id,item.name,item.rank,item.occupied,item.group,"")));
-      //this.teams=res.teams;
-      this.teams.sort(function (a,b) {
-        if(a.rank > b.rank){
-          return 1;
-        }
-        return -1;
-      })
-      this.teams.forEach(item=>{
-        if(item.name==null)
-        {
-          this.teams.splice(this.teams.indexOf(item),1);
+    this.getAllMatches(tournamentID);
+      this.teams = [];
+      this.repo.getTournament(tournamentID).subscribe(res => {
+        //console.log(res);
+        this.tournamentID = res.id;
+        this.tournament = new Tournament(res.id, res.name);
+        //this.any=res.teams;
+        res.teams.forEach(item => this.teams.push(new Team(item.id, item.name, item.rank, item.occupied, item.group, "")));
+        //this.teams=res.teams;
+        this.teams.sort(function (a, b) {
+          if (a.rank > b.rank) {
+            return 1;
+          }
+          return -1;
+        })
+        this.teams.forEach(item => {
+          if (item.name == null) {
+            this.teams.splice(this.teams.indexOf(item), 1);
 
-        }
-        if(item.name=="Fill-in")
-        {
-          this.teams.splice(this.teams.indexOf(item),1);
-        }
+          }
+          if (item.name == "Fill-in") {
+            this.teams.splice(this.teams.indexOf(item), 1);
+          }
+        });
+        this.setTeamRanks();
       });
-      this.setTeamRanks();
-    });
   }
 
   showMatches(id:number){
@@ -122,7 +126,7 @@ export class RankingComponent{
               var id=this.winnerOfMatch(match);
               this.teams.filter(item => item.id == id)[0].rankdesc = "3.Platz";
               this.teams.filter(item => item.id == id)[0].rank=3;
-
+              this.podest[2]=this.teams.filter(item => item.id == id)[0].name;
 
               if(id==match.team1.id)
               {
@@ -139,20 +143,25 @@ export class RankingComponent{
               var id=this.winnerOfMatch(match);
               this.teams.filter(item => item.id == id)[0].rankdesc = "1.Platz";
               this.teams.filter(item => item.id == id)[0].rank=1;
+              this.podest[0]=this.teams.filter(item => item.id == id)[0].name;
+
               if(id==match.team1.id)
               {
                 this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = "2.Platz";
                 this.teams.filter(item => item.id == match.team2.id)[0].rank=2;
+                this.podest[1]=this.teams.filter(item => item.id == match.team2.id)[0].name;
+
               }else{
                 this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = "2.Platz";
                 this.teams.filter(item => item.id == match.team1.id)[0].rank=2;
+                this.podest[1]=this.teams.filter(item => item.id == match.team1.id)[0].name;
               }
             }else{
               var id=this.winnerOfMatch(match);
-              if(match.team1.id==id){
+              if((match.team1.id==id)&&(this.teams.filter(item => item.id == match.team2.id)[0].rankdesc=="")){
                 this.teams.filter(item => item.id == match.team2.id)[0].rankdesc = "Bis zur "+match.round.count+". Runde gekommen";
                 this.teams.filter(item => item.id == match.team2.id)[0].rank=(1+roundCount-match.round.count)+2;
-              }else{
+              }else if((match.team2.id==id)&&(this.teams.filter(item => item.id == match.team1.id)[0].rankdesc=="")){
                 this.teams.filter(item => item.id == match.team1.id)[0].rankdesc = "Bis zur "+match.round.count+". Runde gekommen";
                 this.teams.filter(item => item.id == match.team1.id)[0].rank=(1+roundCount-match.round.count)+2;
               }
@@ -171,6 +180,7 @@ export class RankingComponent{
         });
       });
     });
+
   }
 
   getRoundCount(){
